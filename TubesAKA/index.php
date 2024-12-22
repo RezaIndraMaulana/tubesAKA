@@ -15,16 +15,58 @@ $timeIterative = []; // Waktu eksekusi metode iteratif
 $timeRecursive = []; // Waktu eksekusi metode rekursif
 
 // Fungsi pencarian iteratif
-function searchIterative($data, $score) {
+// function searchIterative($data, $score) {
+//     global $timeIterative; // Gunakan variabel global untuk menyimpan waktu
+//     $found = []; // Hasil pencarian
+//     $startTime = microtime(true); // Mulai catat waktu
+
+//     // Periksa setiap baris data
+//     foreach ($data as $row) {
+//         $timeIterative[] = microtime(true) - $startTime; // Catat waktu saat ini
+//         if ((float)$row['Score'] == (float)$score) { // Jika skor cocok
+//             $found[] = $row; // Tambahkan ke hasil pencarian
+//         }
+//     }
+
+//     return $found; // Kembalikan hasil pencarian
+// }
+
+// // Fungsi pencarian rekursif
+// function searchRecursive($data, $score, $index = 0, $found = [], $startTime = null) {
+//     global $timeRecursive; // Gunakan variabel global untuk menyimpan waktu
+
+//     // Mulai catat waktu jika ini adalah iterasi pertama
+//     if ($startTime === null) {
+//         $startTime = microtime(true);
+//     }
+
+//     $timeRecursive[] = microtime(true) - $startTime; // Catat waktu saat ini
+
+//     // Jika sudah mencapai akhir data, kembalikan hasil
+//     if ($index >= count($data)) {
+//         return $found;
+//     }
+
+//     // Jika skor cocok, tambahkan ke hasil pencarian
+//     if ((float)$data[$index]['Score'] == (float)$score) {
+//         $found[] = $data[$index];
+//     }
+
+//     // Lanjutkan ke data berikutnya
+//     return searchRecursive($data, $score, $index + 1, $found, $startTime);
+// }
+
+function searchIterative($data, $score)
+{
     global $timeIterative; // Gunakan variabel global untuk menyimpan waktu
     $found = []; // Hasil pencarian
     $startTime = microtime(true); // Mulai catat waktu
 
-    // Periksa setiap baris data
-    foreach ($data as $row) {
+    // Gunakan for loop untuk iterasi
+    for ($i = 0; $i < count($data); $i++) {
         $timeIterative[] = microtime(true) - $startTime; // Catat waktu saat ini
-        if ((float)$row['Score'] == (float)$score) { // Jika skor cocok
-            $found[] = $row; // Tambahkan ke hasil pencarian
+        if ((float) $data[$i]['Score'] == (float) $score) { // Jika skor cocok
+            $found[] = $data[$i]; // Tambahkan ke hasil pencarian
         }
     }
 
@@ -32,7 +74,8 @@ function searchIterative($data, $score) {
 }
 
 // Fungsi pencarian rekursif
-function searchRecursive($data, $score, $index = 0, $found = [], $startTime = null) {
+function searchRecursive($data, $score, $index = 0, $found = [], $startTime = null)
+{
     global $timeRecursive; // Gunakan variabel global untuk menyimpan waktu
 
     // Mulai catat waktu jika ini adalah iterasi pertama
@@ -48,11 +91,11 @@ function searchRecursive($data, $score, $index = 0, $found = [], $startTime = nu
     }
 
     // Jika skor cocok, tambahkan ke hasil pencarian
-    if ((float)$data[$index]['Score'] == (float)$score) {
+    if ((float) $data[$index]['Score'] == (float) $score) {
         $found[] = $data[$index];
     }
 
-    // Lanjutkan ke data berikutnya
+    // Panggil fungsi berikutnya untuk data berikutnya
     return searchRecursive($data, $score, $index + 1, $found, $startTime);
 }
 
@@ -102,7 +145,8 @@ mysqli_close($connect);
         <h1>Data Anime - Sequential Search</h1>
         <form method="POST" action="">
             <div class="mb-3">
-                <input type="number" step="any" name="score" class="form-control" placeholder="Cari berdasarkan Score" value="<?= htmlspecialchars($searchScore) ?>" required>
+                <input type="number" step="any" name="score" class="form-control" placeholder="Cari berdasarkan Score"
+                    value="<?= htmlspecialchars($searchScore) ?>" required>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -201,21 +245,21 @@ mysqli_close($connect);
                                 searchAttemptsIterative :
                                 searchAttemptsRecursive, // Label berdasarkan hasil pencarian
                             datasets: [{
-                                    label: 'Iterative Search',
-                                    data: timeIterativeTrimmed,
-                                    borderColor: 'blue',
-                                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
-                                    fill: false,
-                                    tension: 0.3
-                                },
-                                {
-                                    label: 'Recursive Search',
-                                    data: timeRecursiveTrimmed,
-                                    borderColor: 'red',
-                                    backgroundColor: 'rgba(255, 0, 0, 0.1)',
-                                    fill: false,
-                                    tension: 0.3
-                                }
+                                label: 'Iterative Search',
+                                data: timeIterativeTrimmed,
+                                borderColor: 'blue',
+                                backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                                fill: false,
+                                tension: 0.3
+                            },
+                            {
+                                label: 'Recursive Search',
+                                data: timeRecursiveTrimmed,
+                                borderColor: 'red',
+                                backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                                fill: false,
+                                tension: 0.3
+                            }
                             ]
                         },
                         options: {
